@@ -1,0 +1,19 @@
+digraph arxml_secdiff {
+  rankdir="LR";
+  node [shape=box, style=filled, fontname=Helvetica];
+  "/B/Swc/ScenarioB/adas" [label="adas", fillcolor="#f4b6b6"];
+  "/B/Swc/ScenarioB/brakeAct" [label="brakeAct", fillcolor="#f4b6b6"];
+  "/B/Swc/ScenarioB/brakeCtl" [label="brakeCtl", fillcolor="#f4b6b6"];
+  "/B/Swc/ScenarioB/btStack" [label="btStack", fillcolor="#b6d7f4"];
+  "/B/Swc/ScenarioB/diagRouter" [label="diagRouter", fillcolor="#e8e8e8"];
+  "/B/Swc/ScenarioB/gw" [label="gw", fillcolor="#e8e8e8"];
+  "/B/Swc/ScenarioB/ivi" [label="ivi", fillcolor="#b6d7f4"];
+  "/B/Swc/ScenarioB/trajGuard" [label="trajGuard", fillcolor="#e8e8e8"];
+  "/B/Swc/ScenarioB/btStack" -> "/B/Swc/ScenarioB/ivi" [label="data", color="#9e9e9e", penwidth=3.0, style="bold"];
+  "/B/Swc/ScenarioB/ivi" -> "/B/Swc/ScenarioB/gw" [label="data", color="#2e7d32", penwidth=3.0, style="bold"];
+  "/B/Swc/ScenarioB/gw" -> "/B/Swc/ScenarioB/diagRouter" [label="data", color="#9e9e9e", penwidth=1.0, style="dashed"];
+  "/B/Swc/ScenarioB/gw" -> "/B/Swc/ScenarioB/adas" [label="data", color="#c62828", penwidth=3.0, style="bold"];
+  "/B/Swc/ScenarioB/adas" -> "/B/Swc/ScenarioB/trajGuard" [label="data", color="#9e9e9e", penwidth=3.0, style="bold"];
+  "/B/Swc/ScenarioB/trajGuard" -> "/B/Swc/ScenarioB/brakeCtl" [label="data", color="#c62828", penwidth=3.0, style="bold"];
+  "/B/Swc/ScenarioB/brakeCtl" -> "/B/Swc/ScenarioB/brakeAct" [label="data", color="#9e9e9e", penwidth=3.0, style="bold"];
+}

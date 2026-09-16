@@ -1,0 +1,257 @@
+{
+  "nodes": [
+    {
+      "id": "/B/Swc/ScenarioB/adas",
+      "kind": "prototype",
+      "short_name": "adas",
+      "type_ref": "/B/Swc/AdasPlanner",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "TrajOut"
+      ],
+      "required_ports": [
+        "ComfortIn"
+      ],
+      "host": "AdasEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/brakeAct",
+      "kind": "prototype",
+      "short_name": "brakeAct",
+      "type_ref": "/B/Swc/BrakeActuator",
+      "category": "SENSOR-ACTUATOR",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [],
+      "required_ports": [
+        "ForceIn"
+      ],
+      "host": "ChassisEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/brakeCtl",
+      "kind": "prototype",
+      "short_name": "brakeCtl",
+      "type_ref": "/B/Swc/BrakeController",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "ForceOut"
+      ],
+      "required_ports": [
+        "DecelIn"
+      ],
+      "host": "ChassisEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/btStack",
+      "kind": "prototype",
+      "short_name": "btStack",
+      "type_ref": "/B/Swc/BluetoothStack",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "MediaOut"
+      ],
+      "required_ports": [],
+      "host": "IviEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/diagRouter",
+      "kind": "prototype",
+      "short_name": "diagRouter",
+      "type_ref": "/B/Swc/DiagnosticRouter",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [],
+      "required_ports": [
+        "DiagIn"
+      ],
+      "host": "GatewayEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/gw",
+      "kind": "prototype",
+      "short_name": "gw",
+      "type_ref": "/B/Swc/CentralGateway",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "ComfortOut",
+        "DiagOut"
+      ],
+      "required_ports": [
+        "NavIn"
+      ],
+      "host": "GatewayEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/ivi",
+      "kind": "prototype",
+      "short_name": "ivi",
+      "type_ref": "/B/Swc/InfotainmentHeadUnit",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "NavOut"
+      ],
+      "required_ports": [
+        "MediaIn"
+      ],
+      "host": "IviEcu"
+    },
+    {
+      "id": "/B/Swc/ScenarioB/trajGuard",
+      "kind": "prototype",
+      "short_name": "trajGuard",
+      "type_ref": "/B/Swc/TrajectoryGuard",
+      "category": "APPLICATION",
+      "composition": "/B/Swc/ScenarioB",
+      "provided_ports": [
+        "DecelOut"
+      ],
+      "required_ports": [
+        "TrajIn"
+      ],
+      "host": "AdasEcu"
+    }
+  ],
+  "edges": [
+    {
+      "source": "/B/Swc/ScenarioB/adas",
+      "target": "/B/Swc/ScenarioB/trajGuard",
+      "key": "/B/Swc/ScenarioB/adasToGuard#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/adasToGuard",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/Trajectory",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/AdasPlanner/TrajOut",
+      "requester_port": "/B/Swc/TrajectoryGuard/TrajIn",
+      "cross_ecu": false,
+      "pdus": [],
+      "bus_visible": false,
+      "authenticated": null,
+      "secoc_source": null,
+      "unprotected_pdus": []
+    },
+    {
+      "source": "/B/Swc/ScenarioB/brakeCtl",
+      "target": "/B/Swc/ScenarioB/brakeAct",
+      "key": "/B/Swc/ScenarioB/brakeToAct#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/brakeToAct",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/BrakeForce",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/BrakeController/ForceOut",
+      "requester_port": "/B/Swc/BrakeActuator/ForceIn",
+      "cross_ecu": false,
+      "pdus": [],
+      "bus_visible": false,
+      "authenticated": null,
+      "secoc_source": null,
+      "unprotected_pdus": []
+    },
+    {
+      "source": "/B/Swc/ScenarioB/btStack",
+      "target": "/B/Swc/ScenarioB/ivi",
+      "key": "/B/Swc/ScenarioB/btToIvi#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/btToIvi",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/MediaReq",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/BluetoothStack/MediaOut",
+      "requester_port": "/B/Swc/InfotainmentHeadUnit/MediaIn",
+      "cross_ecu": false,
+      "pdus": [],
+      "bus_visible": false,
+      "authenticated": null,
+      "secoc_source": null,
+      "unprotected_pdus": []
+    },
+    {
+      "source": "/B/Swc/ScenarioB/gw",
+      "target": "/B/Swc/ScenarioB/adas",
+      "key": "/B/Swc/ScenarioB/gwToAdas#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/gwToAdas",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/ComfortMode",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/CentralGateway/ComfortOut",
+      "requester_port": "/B/Swc/AdasPlanner/ComfortIn",
+      "cross_ecu": true,
+      "pdus": [
+        "/B/Comm/ComfortIPdu"
+      ],
+      "bus_visible": true,
+      "unprotected_pdus": [
+        "/B/Comm/ComfortIPdu"
+      ],
+      "authenticated": false,
+      "secoc_source": "absent"
+    },
+    {
+      "source": "/B/Swc/ScenarioB/gw",
+      "target": "/B/Swc/ScenarioB/diagRouter",
+      "key": "/B/Swc/ScenarioB/gwToDiag#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/gwToDiag",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/DiagCmd",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/CentralGateway/DiagOut",
+      "requester_port": "/B/Swc/DiagnosticRouter/DiagIn",
+      "cross_ecu": false,
+      "pdus": [],
+      "bus_visible": false,
+      "authenticated": null,
+      "secoc_source": null,
+      "unprotected_pdus": []
+    },
+    {
+      "source": "/B/Swc/ScenarioB/ivi",
+      "target": "/B/Swc/ScenarioB/gw",
+      "key": "/B/Swc/ScenarioB/iviToGw#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/iviToGw",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/NavRoute",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/InfotainmentHeadUnit/NavOut",
+      "requester_port": "/B/Swc/CentralGateway/NavIn",
+      "cross_ecu": true,
+      "pdus": [
+        "/B/Comm/NavIPdu"
+      ],
+      "bus_visible": true,
+      "unprotected_pdus": [],
+      "authenticated": true,
+      "secoc_source": "secured-i-pdu"
+    },
+    {
+      "source": "/B/Swc/ScenarioB/trajGuard",
+      "target": "/B/Swc/ScenarioB/brakeCtl",
+      "key": "/B/Swc/ScenarioB/guardToBrake#data",
+      "influence": "data",
+      "connector": "/B/Swc/ScenarioB/guardToBrake",
+      "connector_kind": "ASSEMBLY",
+      "interface": "/B/If/DecelReq",
+      "interface_kind": "SENDER-RECEIVER",
+      "provider_port": "/B/Swc/TrajectoryGuard/DecelOut",
+      "requester_port": "/B/Swc/BrakeController/DecelIn",
+      "cross_ecu": true,
+      "pdus": [
+        "/B/Comm/DecelIPdu"
+      ],
+      "bus_visible": true,
+      "unprotected_pdus": [
+        "/B/Comm/DecelIPdu"
+      ],
+      "authenticated": false,
+      "secoc_source": "absent"
+    }
+  ]
+}
