@@ -1,0 +1,218 @@
+{
+  "verdict": "BLOCK",
+  "exit_code": 3,
+  "reasons": [
+    "2 finding(s) at risk 5 or above, worst: sdk can now reach body"
+  ],
+  "sources": {
+    "before": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/09_supply_chain_sdk/before.arxml"
+    ],
+    "updated": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/09_supply_chain_sdk/after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "before": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 4,
+      "secoc_profiles": 2,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "updated": {
+      "components": 4,
+      "connections": 3,
+      "pdus": 5,
+      "secoc_profiles": 2,
+      "synthetic_secoc": 0,
+      "entry_points": 2,
+      "critical_nodes": 1,
+      "attack_paths": 2
+    },
+    "structural": {
+      "nodes_added": 1,
+      "nodes_removed": 0,
+      "nodes_modified": 1,
+      "edges_added": 1,
+      "edges_removed": 0,
+      "edges_modified": 0,
+      "newly_unprotected": 1,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 1,
+      "updated_paths": 2,
+      "new_pairs": 1,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 0
+    },
+    "findings": 3,
+    "gate": {
+      "verdict": "BLOCK",
+      "exit_code": 3,
+      "blocking": 2,
+      "flagged": 0,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 1,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [],
+  "findings": [
+    {
+      "id": "newly-reachable:/S09SDK/Swc/Root/sdk->/S09SDK/Swc/Root/body",
+      "category": "newly-reachable",
+      "subject": "/S09SDK/Swc/Root/sdk->/S09SDK/Swc/Root/body",
+      "title": "sdk can now reach body",
+      "detail": "No path existed between these two in the before. Every connector on the new route may be individually reasonable; the chain is not.",
+      "target": "/S09SDK/Swc/Root/body",
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "body is ASIL D -> severe impact",
+        "1 of 2 hops cross a bus unauthenticated (weakest: sdktogw)"
+      ],
+      "route": [
+        "/S09SDK/Swc/Root/sdk",
+        "/S09SDK/Swc/Root/gw",
+        "/S09SDK/Swc/Root/body"
+      ],
+      "evidence": {
+        "path": [
+          "/S09SDK/Swc/Root/sdk",
+          "/S09SDK/Swc/Root/gw",
+          "/S09SDK/Swc/Root/body"
+        ],
+        "hops": [
+          "/S09SDK/Swc/Root/sdk -data-> /S09SDK/Swc/Root/gw",
+          "/S09SDK/Swc/Root/gw -data-> /S09SDK/Swc/Root/body"
+        ],
+        "unprotected_hops": [
+          "/S09SDK/Swc/Root/sdktogw#data"
+        ],
+        "bus_hops": [
+          "/S09SDK/Swc/Root/sdktogw#data",
+          "/S09SDK/Swc/Root/gwtobody#data"
+        ],
+        "fully_protected": false
+      }
+    },
+    {
+      "id": "unprotected-new-hop:/S09SDK/Swc/Root/sdktogw#data",
+      "category": "unprotected-new-hop",
+      "subject": "/S09SDK/Swc/Root/sdktogw#data",
+      "title": "Unauthenticated bus traffic on sdktogw",
+      "detail": "This hop is newly applicable for SecOC and arrived without it, so it is on a wire with nothing authenticating it.",
+      "target": null,
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "this hop lies on a route to body, so it inherits that target's severe impact",
+        "unauthenticated bus traffic: forging a frame needs bus access and commodity hardware, no keys"
+      ],
+      "route": null,
+      "evidence": {
+        "connector": "/S09SDK/Swc/Root/sdktogw",
+        "influence": "data",
+        "source": "/S09SDK/Swc/Root/sdk",
+        "target": "/S09SDK/Swc/Root/gw",
+        "unprotected_pdus": [
+          "/S09SDK/Comm/sdktogwIPdu"
+        ],
+        "changed_fields": []
+      }
+    },
+    {
+      "id": "component-added:/S09SDK/Swc/Root/sdk",
+      "category": "component-added",
+      "subject": "/S09SDK/Swc/Root/sdk",
+      "title": "New component sdk",
+      "detail": "",
+      "target": null,
+      "informational": true,
+      "risk": 1,
+      "risk_label": "informational",
+      "impact": "negligible",
+      "feasibility": "very-low",
+      "assumed": true,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "category component-added carries a fixed negligible impact",
+        "no bus exposure established for this finding"
+      ],
+      "route": null,
+      "evidence": {
+        "host": "TelematicsEcu",
+        "type": "/S09SDK/Swc/ThirdPartyAdSdk"
+      }
+    }
+  ],
+  "gate": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "blocking": 2,
+    "flagged": 0,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 1,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S09SDK/Swc/Root/ivi"
+      ],
+      "critical": [
+        "/S09SDK/Swc/Root/body"
+      ],
+      "heuristic_only": false,
+      "unmatched": [
+        [
+          "entry",
+          "/S09SDK/Swc/Root/sdk"
+        ]
+      ],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S09SDK/Swc/Root/ivi",
+        "/S09SDK/Swc/Root/sdk"
+      ],
+      "critical": [
+        "/S09SDK/Swc/Root/body"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    }
+  },
+  "limitations": [
+    "before: config pattern '/S09SDK/Swc/Root/sdk' for entry matched no component in this snapshot, so that check did not run.",
+    "the entry/critical seed set differs between the two snapshots, so some reachability changes may reflect the question changing rather than the architecture: /S09SDK/Swc/Root/sdk"
+  ]
+}

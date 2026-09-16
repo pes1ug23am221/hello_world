@@ -1,0 +1,121 @@
+[
+  {
+    "id": "01_jeep_uconnect",
+    "title": "Jeep Cherokee / Uconnect remote exploit (2015)",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 4,
+    "categories": [
+      "newly-reachable",
+      "unprotected-new-hop"
+    ]
+  },
+  {
+    "id": "02_bmw_connecteddrive",
+    "title": "BMW ConnectedDrive TCU-to-gateway diagnostic passthrough (2018)",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 2,
+    "categories": [
+      "newly-reachable",
+      "unprotected-new-hop"
+    ]
+  },
+  {
+    "id": "03_tesla_2016_fix",
+    "title": "Tesla 2016 remote-attack OTA fix: code signing added (control case)",
+    "expected": "PASS",
+    "exit_code": 0,
+    "stderr": "",
+    "verdict": "PASS",
+    "risk": null,
+    "n_findings": 0,
+    "categories": []
+  },
+  {
+    "id": "04_mitsubishi_outlander",
+    "title": "Mitsubishi Outlander PHEV Wi-Fi module weak PSK -> GSM module fix",
+    "expected": "FLAG",
+    "exit_code": 1,
+    "stderr": "",
+    "verdict": "FLAG",
+    "risk": null,
+    "n_findings": 3,
+    "categories": [
+      "component-added",
+      "component-removed",
+      "newly-reachable"
+    ]
+  },
+  {
+    "id": "05_fca_network_fix",
+    "title": "FCA post-recall network-level access restriction (2015)",
+    "expected": "PASS",
+    "exit_code": 0,
+    "stderr": "",
+    "verdict": "PASS",
+    "risk": null,
+    "n_findings": 0,
+    "categories": []
+  },
+  {
+    "id": "06_curry_nissan_api",
+    "title": "Cloud API authorization-object regression (Sam Curry disclosure, 2023)",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 1,
+    "categories": [
+      "secoc-removed"
+    ]
+  },
+  {
+    "id": "07_spireon_fleet_admin",
+    "title": "Spireon fleet admin-panel authentication misconfiguration (2023)",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 1,
+    "categories": [
+      "secoc-removed"
+    ]
+  },
+  {
+    "id": "08_someip_deassociation",
+    "title": "SOME/IP service-discovery de-association (Zelle et al., 2021)",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 1,
+    "categories": [
+      "secoc-removed"
+    ]
+  },
+  {
+    "id": "09_supply_chain_sdk",
+    "title": "Third-party supplier SDK bundled into an infotainment feature update",
+    "expected": "BLOCK",
+    "exit_code": 3,
+    "stderr": "",
+    "verdict": "BLOCK",
+    "risk": null,
+    "n_findings": 3,
+    "categories": [
+      "component-added",
+      "newly-reachable",
+      "unprotected-new-hop"
+    ]
+  }
+]

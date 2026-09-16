@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FCA post-recall network-level access restriction (2015)
+     Source: Stellantis/FCA media statement, 2015-07-24
+     Fix removes a connector entirely and authenticates what remains. Expected: PASS (removed-pair, no regression).
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>S05FIX</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>If</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>RemoteCmd</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>CanFrame</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Swc</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Telematics</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>telToGwOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S05FIX/If/RemoteCmd</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Gateway</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>gwToSteerOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S05FIX/If/CanFrame</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>telToGwIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S05FIX/If/RemoteCmd</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>SteeringCtrl</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>gwToSteerIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S05FIX/If/CanFrame</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>tel</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S05FIX/Swc/Telematics</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>gw</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S05FIX/Swc/Gateway</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>steer</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S05FIX/Swc/SteeringCtrl</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+              <CONNECTORS>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>telToGw</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/tel</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S05FIX/Swc/Telematics/telToGwOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/gw</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S05FIX/Swc/Gateway/telToGwIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>gwToSteer</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/gw</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S05FIX/Swc/Gateway/gwToSteerOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/steer</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S05FIX/Swc/SteeringCtrl/gwToSteerIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+              </CONNECTORS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Comm</SHORT-NAME>
+          <ELEMENTS>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>telToGwSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>telToGwISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S05FIX/Comm/telToGwSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>telToGwIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>telToGwMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S05FIX/Comm/telToGwISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>gwToSteerSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>gwToSteerISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S05FIX/Comm/gwToSteerSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>gwToSteerIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>gwToSteerMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S05FIX/Comm/gwToSteerISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Topology</SHORT-NAME>
+          <ELEMENTS>
+            <ECU-INSTANCE>
+              <SHORT-NAME>ChassisEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>GatewayEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>TelematicsEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <SYSTEM>
+              <SHORT-NAME>Veh</SHORT-NAME>
+              <ROOT-SOFTWARE-COMPOSITIONS>
+                <ROOT-SW-COMPOSITION-PROTOTYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <SOFTWARE-COMPOSITION-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/S05FIX/Swc/Root</SOFTWARE-COMPOSITION-TREF>
+                </ROOT-SW-COMPOSITION-PROTOTYPE>
+              </ROOT-SOFTWARE-COMPOSITIONS>
+              <MAPPINGS>
+                <SYSTEM-MAPPING>
+                  <SHORT-NAME>Map</SHORT-NAME>
+                  <DATA-MAPPINGS>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S05FIX/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S05FIX/Swc/Telematics/telToGwOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S05FIX/If/RemoteCmd/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S05FIX/Comm/telToGwSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S05FIX/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S05FIX/Swc/Gateway/gwToSteerOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S05FIX/If/CanFrame/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S05FIX/Comm/gwToSteerSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                  </DATA-MAPPINGS>
+                  <SW-MAPPINGS>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToChassisEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/steer</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S05FIX/Topology/ChassisEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToGatewayEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/gw</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S05FIX/Topology/GatewayEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToTelematicsEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S05FIX/Swc/Root/tel</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S05FIX/Topology/TelematicsEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                  </SW-MAPPINGS>
+                </SYSTEM-MAPPING>
+              </MAPPINGS>
+            </SYSTEM>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

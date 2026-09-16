@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S06API/Swc/Root/api
+    reason: "Cloud API authorization-object regression (Sam Curry disclosure, 2023) entry point"
+
+critical:
+  - node: /S06API/Swc/Root/ignition
+    asil: D
+    reason: "Cloud API authorization-object regression (Sam Curry disclosure, 2023) safety-critical target"

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spireon fleet admin-panel authentication misconfiguration (2023)
+     Source: Security Ledger / The Hacker News coverage of Sam Curry et al. disclosures, Jan 2023
+     Admin panel loses authentication to the fleet gateway, enabling mass remote starter disable. Expected: BLOCK.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>S07ADMI</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>If</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>AdminCmd</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>StarterCmd</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Swc</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>AdminPanel</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>panelToFleetOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S07ADMI/If/AdminCmd</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>FleetGateway</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>fleetToStarterOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S07ADMI/If/StarterCmd</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>panelToFleetIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S07ADMI/If/AdminCmd</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>StarterCtrl</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>fleetToStarterIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S07ADMI/If/StarterCmd</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>panel</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S07ADMI/Swc/AdminPanel</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>fleet</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S07ADMI/Swc/FleetGateway</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>starter</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S07ADMI/Swc/StarterCtrl</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+              <CONNECTORS>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>panelToFleet</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/panel</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S07ADMI/Swc/AdminPanel/panelToFleetOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/fleet</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S07ADMI/Swc/FleetGateway/panelToFleetIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>fleetToStarter</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/fleet</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S07ADMI/Swc/FleetGateway/fleetToStarterOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/starter</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S07ADMI/Swc/StarterCtrl/fleetToStarterIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+              </CONNECTORS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Comm</SHORT-NAME>
+          <ELEMENTS>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>panelToFleetSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>panelToFleetISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S07ADMI/Comm/panelToFleetSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>panelToFleetIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>panelToFleetMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S07ADMI/Comm/panelToFleetISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+            <SECURED-I-PDU>
+              <SHORT-NAME>panelToFleetSecuredIPdu</SHORT-NAME>
+              <AUTH-INFO-TX-LENGTH>32</AUTH-INFO-TX-LENGTH>
+              <FRESHNESS-VALUE-ID>1</FRESHNESS-VALUE-ID>
+              <FRESHNESS-VALUE-LENGTH>8</FRESHNESS-VALUE-LENGTH>
+              <PAYLOAD-REF DEST="I-SIGNAL-I-PDU">/S07ADMI/Comm/panelToFleetIPdu</PAYLOAD-REF>
+            </SECURED-I-PDU>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>fleetToStarterSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>fleetToStarterISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S07ADMI/Comm/fleetToStarterSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>fleetToStarterIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>fleetToStarterMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S07ADMI/Comm/fleetToStarterISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+            <SECURED-I-PDU>
+              <SHORT-NAME>fleetToStarterSecuredIPdu</SHORT-NAME>
+              <AUTH-INFO-TX-LENGTH>32</AUTH-INFO-TX-LENGTH>
+              <FRESHNESS-VALUE-ID>1</FRESHNESS-VALUE-ID>
+              <FRESHNESS-VALUE-LENGTH>8</FRESHNESS-VALUE-LENGTH>
+              <PAYLOAD-REF DEST="I-SIGNAL-I-PDU">/S07ADMI/Comm/fleetToStarterIPdu</PAYLOAD-REF>
+            </SECURED-I-PDU>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Topology</SHORT-NAME>
+          <ELEMENTS>
+            <ECU-INSTANCE>
+              <SHORT-NAME>GatewayEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>PowertrainEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>TelematicsEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <SYSTEM>
+              <SHORT-NAME>Veh</SHORT-NAME>
+              <ROOT-SOFTWARE-COMPOSITIONS>
+                <ROOT-SW-COMPOSITION-PROTOTYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <SOFTWARE-COMPOSITION-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/S07ADMI/Swc/Root</SOFTWARE-COMPOSITION-TREF>
+                </ROOT-SW-COMPOSITION-PROTOTYPE>
+              </ROOT-SOFTWARE-COMPOSITIONS>
+              <MAPPINGS>
+                <SYSTEM-MAPPING>
+                  <SHORT-NAME>Map</SHORT-NAME>
+                  <DATA-MAPPINGS>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S07ADMI/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S07ADMI/Swc/AdminPanel/panelToFleetOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S07ADMI/If/AdminCmd/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S07ADMI/Comm/panelToFleetSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S07ADMI/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S07ADMI/Swc/FleetGateway/fleetToStarterOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S07ADMI/If/StarterCmd/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S07ADMI/Comm/fleetToStarterSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                  </DATA-MAPPINGS>
+                  <SW-MAPPINGS>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToGatewayEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/fleet</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S07ADMI/Topology/GatewayEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToPowertrainEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/starter</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S07ADMI/Topology/PowertrainEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToTelematicsEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S07ADMI/Swc/Root/panel</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S07ADMI/Topology/TelematicsEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                  </SW-MAPPINGS>
+                </SYSTEM-MAPPING>
+              </MAPPINGS>
+            </SYSTEM>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,265 @@
+{
+  "verdict": "BLOCK",
+  "exit_code": 3,
+  "reasons": [
+    "4 finding(s) at risk 5 or above, worst: ivi can now reach steer"
+  ],
+  "sources": {
+    "before": [
+      "D:\\arxml-secdiff-main\\scenario_runs\\01_jeep_uconnect\\before.arxml"
+    ],
+    "updated": [
+      "D:\\arxml-secdiff-main\\scenario_runs\\01_jeep_uconnect\\after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "before": {
+      "components": 4,
+      "connections": 1,
+      "pdus": 0,
+      "secoc_profiles": 0,
+      "synthetic_secoc": 0,
+      "entry_points": 2,
+      "critical_nodes": 1,
+      "attack_paths": 0
+    },
+    "updated": {
+      "components": 4,
+      "connections": 3,
+      "pdus": 2,
+      "secoc_profiles": 0,
+      "synthetic_secoc": 0,
+      "entry_points": 2,
+      "critical_nodes": 1,
+      "attack_paths": 2
+    },
+    "structural": {
+      "nodes_added": 0,
+      "nodes_removed": 0,
+      "nodes_modified": 3,
+      "edges_added": 2,
+      "edges_removed": 0,
+      "edges_modified": 0,
+      "newly_unprotected": 2,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 0,
+      "updated_paths": 2,
+      "new_pairs": 2,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 0
+    },
+    "findings": 4,
+    "gate": {
+      "verdict": "BLOCK",
+      "exit_code": 3,
+      "blocking": 4,
+      "flagged": 0,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 0,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [],
+  "findings": [
+    {
+      "id": "newly-reachable:/S01UCON/Swc/Root/ivi->/S01UCON/Swc/Root/steer",
+      "category": "newly-reachable",
+      "subject": "/S01UCON/Swc/Root/ivi->/S01UCON/Swc/Root/steer",
+      "title": "ivi can now reach steer",
+      "detail": "No path existed between these two in the before. Every connector on the new route may be individually reasonable; the chain is not.",
+      "target": "/S01UCON/Swc/Root/steer",
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "steer is ASIL D -> severe impact",
+        "2 of 2 hops cross a bus unauthenticated (weakest: huToBridge)"
+      ],
+      "route": [
+        "/S01UCON/Swc/Root/ivi",
+        "/S01UCON/Swc/Root/bridge",
+        "/S01UCON/Swc/Root/steer"
+      ],
+      "evidence": {
+        "path": [
+          "/S01UCON/Swc/Root/ivi",
+          "/S01UCON/Swc/Root/bridge",
+          "/S01UCON/Swc/Root/steer"
+        ],
+        "hops": [
+          "/S01UCON/Swc/Root/ivi -data-> /S01UCON/Swc/Root/bridge",
+          "/S01UCON/Swc/Root/bridge -data-> /S01UCON/Swc/Root/steer"
+        ],
+        "unprotected_hops": [
+          "/S01UCON/Swc/Root/huToBridge#data",
+          "/S01UCON/Swc/Root/bridgeToSteer#data"
+        ],
+        "bus_hops": [
+          "/S01UCON/Swc/Root/huToBridge#data",
+          "/S01UCON/Swc/Root/bridgeToSteer#data"
+        ],
+        "fully_protected": false
+      }
+    },
+    {
+      "id": "newly-reachable:/S01UCON/Swc/Root/tel->/S01UCON/Swc/Root/steer",
+      "category": "newly-reachable",
+      "subject": "/S01UCON/Swc/Root/tel->/S01UCON/Swc/Root/steer",
+      "title": "tel can now reach steer",
+      "detail": "No path existed between these two in the before. Every connector on the new route may be individually reasonable; the chain is not.",
+      "target": "/S01UCON/Swc/Root/steer",
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "steer is ASIL D -> severe impact",
+        "2 of 3 hops cross a bus unauthenticated (weakest: huToBridge)"
+      ],
+      "route": [
+        "/S01UCON/Swc/Root/tel",
+        "/S01UCON/Swc/Root/ivi",
+        "/S01UCON/Swc/Root/bridge",
+        "/S01UCON/Swc/Root/steer"
+      ],
+      "evidence": {
+        "path": [
+          "/S01UCON/Swc/Root/tel",
+          "/S01UCON/Swc/Root/ivi",
+          "/S01UCON/Swc/Root/bridge",
+          "/S01UCON/Swc/Root/steer"
+        ],
+        "hops": [
+          "/S01UCON/Swc/Root/tel -data-> /S01UCON/Swc/Root/ivi",
+          "/S01UCON/Swc/Root/ivi -data-> /S01UCON/Swc/Root/bridge",
+          "/S01UCON/Swc/Root/bridge -data-> /S01UCON/Swc/Root/steer"
+        ],
+        "unprotected_hops": [
+          "/S01UCON/Swc/Root/huToBridge#data",
+          "/S01UCON/Swc/Root/bridgeToSteer#data"
+        ],
+        "bus_hops": [
+          "/S01UCON/Swc/Root/huToBridge#data",
+          "/S01UCON/Swc/Root/bridgeToSteer#data"
+        ],
+        "fully_protected": false
+      }
+    },
+    {
+      "id": "unprotected-new-hop:/S01UCON/Swc/Root/bridgeToSteer#data",
+      "category": "unprotected-new-hop",
+      "subject": "/S01UCON/Swc/Root/bridgeToSteer#data",
+      "title": "Unauthenticated bus traffic on bridgeToSteer",
+      "detail": "This hop is newly applicable for SecOC and arrived without it, so it is on a wire with nothing authenticating it.",
+      "target": null,
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "this hop lies on a route to steer, so it inherits that target's severe impact",
+        "unauthenticated bus traffic: forging a frame needs bus access and commodity hardware, no keys"
+      ],
+      "route": null,
+      "evidence": {
+        "connector": "/S01UCON/Swc/Root/bridgeToSteer",
+        "influence": "data",
+        "source": "/S01UCON/Swc/Root/bridge",
+        "target": "/S01UCON/Swc/Root/steer",
+        "unprotected_pdus": [
+          "/S01UCON/Comm/bridgeToSteerIPdu"
+        ],
+        "changed_fields": []
+      }
+    },
+    {
+      "id": "unprotected-new-hop:/S01UCON/Swc/Root/huToBridge#data",
+      "category": "unprotected-new-hop",
+      "subject": "/S01UCON/Swc/Root/huToBridge#data",
+      "title": "Unauthenticated bus traffic on huToBridge",
+      "detail": "This hop is newly applicable for SecOC and arrived without it, so it is on a wire with nothing authenticating it.",
+      "target": null,
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "this hop lies on a route to steer, so it inherits that target's severe impact",
+        "unauthenticated bus traffic: forging a frame needs bus access and commodity hardware, no keys"
+      ],
+      "route": null,
+      "evidence": {
+        "connector": "/S01UCON/Swc/Root/huToBridge",
+        "influence": "data",
+        "source": "/S01UCON/Swc/Root/ivi",
+        "target": "/S01UCON/Swc/Root/bridge",
+        "unprotected_pdus": [
+          "/S01UCON/Comm/huToBridgeIPdu"
+        ],
+        "changed_fields": []
+      }
+    }
+  ],
+  "gate": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "blocking": 4,
+    "flagged": 0,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 0,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S01UCON/Swc/Root/ivi",
+        "/S01UCON/Swc/Root/tel"
+      ],
+      "critical": [
+        "/S01UCON/Swc/Root/steer"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S01UCON/Swc/Root/ivi",
+        "/S01UCON/Swc/Root/tel"
+      ],
+      "critical": [
+        "/S01UCON/Swc/Root/steer"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    }
+  },
+  "limitations": []
+}

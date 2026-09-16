@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Third-party supplier SDK bundled into an infotainment feature update
+     Source: NHTSA, 'Cybersecurity Best Practices for the Safety of Modern Vehicles' (2020)
+     A feature update bundles a third-party telemetry SDK that gets an unauthenticated connector straight to the gateway it doesn't need. Expected: BLOCK (component-added + unprotected-new-hop).
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>S09SDK</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>If</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>InfoLink</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>BodyCmd</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>TelemetryLink</SHORT-NAME>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>val</SHORT-NAME>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Swc</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>HeadUnit</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>ivitogwOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/InfoLink</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>ThirdPartyAdSdk</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>sdktogwOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/TelemetryLink</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Gateway</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>gwtobodyOut</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/BodyCmd</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>ivitogwIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/InfoLink</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>sdktogwIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/TelemetryLink</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>BodyCtrl</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>gwtobodyIn</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/S09SDK/If/BodyCmd</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>ivi</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S09SDK/Swc/HeadUnit</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>sdk</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S09SDK/Swc/ThirdPartyAdSdk</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>gw</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S09SDK/Swc/Gateway</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>body</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/S09SDK/Swc/BodyCtrl</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+              <CONNECTORS>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>ivitogw</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/ivi</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/HeadUnit/ivitogwOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/gw</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S09SDK/Swc/Gateway/ivitogwIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>gwtobody</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/gw</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/Gateway/gwtobodyOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/body</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S09SDK/Swc/BodyCtrl/gwtobodyIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+                <ASSEMBLY-SW-CONNECTOR>
+                  <SHORT-NAME>sdktogw</SHORT-NAME>
+                  <PROVIDER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/sdk</CONTEXT-COMPONENT-REF>
+                    <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/ThirdPartyAdSdk/sdktogwOut</TARGET-P-PORT-REF>
+                  </PROVIDER-IREF>
+                  <REQUESTER-IREF>
+                    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/gw</CONTEXT-COMPONENT-REF>
+                    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/S09SDK/Swc/Gateway/sdktogwIn</TARGET-R-PORT-REF>
+                  </REQUESTER-IREF>
+                </ASSEMBLY-SW-CONNECTOR>
+              </CONNECTORS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Comm</SHORT-NAME>
+          <ELEMENTS>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>ivitogwSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>ivitogwISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/ivitogwSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>ivitogwIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>ivitogwMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S09SDK/Comm/ivitogwISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+            <SECURED-I-PDU>
+              <SHORT-NAME>ivitogwSecuredIPdu</SHORT-NAME>
+              <AUTH-INFO-TX-LENGTH>32</AUTH-INFO-TX-LENGTH>
+              <FRESHNESS-VALUE-ID>1</FRESHNESS-VALUE-ID>
+              <FRESHNESS-VALUE-LENGTH>8</FRESHNESS-VALUE-LENGTH>
+              <PAYLOAD-REF DEST="I-SIGNAL-I-PDU">/S09SDK/Comm/ivitogwIPdu</PAYLOAD-REF>
+            </SECURED-I-PDU>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>gwtobodySSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>gwtobodyISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/gwtobodySSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>gwtobodyIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>gwtobodyMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S09SDK/Comm/gwtobodyISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+            <SECURED-I-PDU>
+              <SHORT-NAME>gwtobodySecuredIPdu</SHORT-NAME>
+              <AUTH-INFO-TX-LENGTH>32</AUTH-INFO-TX-LENGTH>
+              <FRESHNESS-VALUE-ID>1</FRESHNESS-VALUE-ID>
+              <FRESHNESS-VALUE-LENGTH>8</FRESHNESS-VALUE-LENGTH>
+              <PAYLOAD-REF DEST="I-SIGNAL-I-PDU">/S09SDK/Comm/gwtobodyIPdu</PAYLOAD-REF>
+            </SECURED-I-PDU>
+            <SYSTEM-SIGNAL>
+              <SHORT-NAME>sdktogwSSig</SHORT-NAME>
+            </SYSTEM-SIGNAL>
+            <I-SIGNAL>
+              <SHORT-NAME>sdktogwISig</SHORT-NAME>
+              <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/sdktogwSSig</SYSTEM-SIGNAL-REF>
+            </I-SIGNAL>
+            <I-SIGNAL-I-PDU>
+              <SHORT-NAME>sdktogwIPdu</SHORT-NAME>
+              <I-SIGNAL-TO-PDU-MAPPINGS>
+                <I-SIGNAL-TO-I-PDU-MAPPING>
+                  <SHORT-NAME>sdktogwMap</SHORT-NAME>
+                  <I-SIGNAL-REF DEST="I-SIGNAL">/S09SDK/Comm/sdktogwISig</I-SIGNAL-REF>
+                </I-SIGNAL-TO-I-PDU-MAPPING>
+              </I-SIGNAL-TO-PDU-MAPPINGS>
+            </I-SIGNAL-I-PDU>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Topology</SHORT-NAME>
+          <ELEMENTS>
+            <ECU-INSTANCE>
+              <SHORT-NAME>BodyEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>GatewayEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <ECU-INSTANCE>
+              <SHORT-NAME>TelematicsEcu</SHORT-NAME>
+            </ECU-INSTANCE>
+            <SYSTEM>
+              <SHORT-NAME>Veh</SHORT-NAME>
+              <ROOT-SOFTWARE-COMPOSITIONS>
+                <ROOT-SW-COMPOSITION-PROTOTYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <SOFTWARE-COMPOSITION-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/S09SDK/Swc/Root</SOFTWARE-COMPOSITION-TREF>
+                </ROOT-SW-COMPOSITION-PROTOTYPE>
+              </ROOT-SOFTWARE-COMPOSITIONS>
+              <MAPPINGS>
+                <SYSTEM-MAPPING>
+                  <SHORT-NAME>Map</SHORT-NAME>
+                  <DATA-MAPPINGS>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S09SDK/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/HeadUnit/ivitogwOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S09SDK/If/InfoLink/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/ivitogwSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S09SDK/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/Gateway/gwtobodyOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S09SDK/If/BodyCmd/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/gwtobodySSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                    <SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                      <DATA-ELEMENT-IREF>
+                        <CONTEXT-COMPOSITION-REF DEST="ROOT-SW-COMPOSITION-PROTOTYPE">/S09SDK/Topology/Veh/Root</CONTEXT-COMPOSITION-REF>
+                        <CONTEXT-PORT-REF DEST="P-PORT-PROTOTYPE">/S09SDK/Swc/ThirdPartyAdSdk/sdktogwOut</CONTEXT-PORT-REF>
+                        <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/S09SDK/If/TelemetryLink/val</TARGET-DATA-PROTOTYPE-REF>
+                      </DATA-ELEMENT-IREF>
+                      <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/S09SDK/Comm/sdktogwSSig</SYSTEM-SIGNAL-REF>
+                    </SENDER-RECEIVER-TO-SIGNAL-MAPPING>
+                  </DATA-MAPPINGS>
+                  <SW-MAPPINGS>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToBodyEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/body</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S09SDK/Topology/BodyEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToGatewayEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/gw</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S09SDK/Topology/GatewayEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                    <SWC-TO-ECU-MAPPING>
+                      <SHORT-NAME>ToTelematicsEcu</SHORT-NAME>
+                      <COMPONENT-IREFS>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/ivi</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                        <COMPONENT-IREF>
+                          <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/S09SDK/Swc/Root/sdk</TARGET-COMPONENT-REF>
+                        </COMPONENT-IREF>
+                      </COMPONENT-IREFS>
+                      <ECU-INSTANCE-REF DEST="ECU-INSTANCE">/S09SDK/Topology/TelematicsEcu</ECU-INSTANCE-REF>
+                    </SWC-TO-ECU-MAPPING>
+                  </SW-MAPPINGS>
+                </SYSTEM-MAPPING>
+              </MAPPINGS>
+            </SYSTEM>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S02CONN/Swc/Root/tcu
+    reason: "BMW ConnectedDrive TCU-to-gateway diagnostic passthrough (2018) entry point"
+
+critical:
+  - node: /S02CONN/Swc/Root/chassis
+    asil: D
+    reason: "BMW ConnectedDrive TCU-to-gateway diagnostic passthrough (2018) safety-critical target"

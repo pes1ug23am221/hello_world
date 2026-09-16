@@ -1,0 +1,122 @@
+{
+  "verdict": "PASS",
+  "exit_code": 0,
+  "reasons": [
+    "no finding reached the flag threshold"
+  ],
+  "sources": {
+    "before": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/03_tesla_2016_fix/before.arxml"
+    ],
+    "updated": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/03_tesla_2016_fix/after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "PASS",
+    "exit_code": 0,
+    "before": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 2,
+      "secoc_profiles": 0,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "updated": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 4,
+      "secoc_profiles": 2,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "structural": {
+      "nodes_added": 0,
+      "nodes_removed": 0,
+      "nodes_modified": 0,
+      "edges_added": 0,
+      "edges_removed": 0,
+      "edges_modified": 2,
+      "newly_unprotected": 0,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 1,
+      "updated_paths": 1,
+      "new_pairs": 0,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 0
+    },
+    "findings": 0,
+    "gate": {
+      "verdict": "PASS",
+      "exit_code": 0,
+      "blocking": 0,
+      "flagged": 0,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 0,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [
+    {
+      "pdu": "/S03FIX/Comm/gwToApeIPdu",
+      "change": "added",
+      "lost_protection": false
+    },
+    {
+      "pdu": "/S03FIX/Comm/icToGwIPdu",
+      "change": "added",
+      "lost_protection": false
+    }
+  ],
+  "findings": [],
+  "gate": {
+    "verdict": "PASS",
+    "exit_code": 0,
+    "blocking": 0,
+    "flagged": 0,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 0,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S03FIX/Swc/Root/ic"
+      ],
+      "critical": [
+        "/S03FIX/Swc/Root/ape"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S03FIX/Swc/Root/ic"
+      ],
+      "critical": [
+        "/S03FIX/Swc/Root/ape"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    }
+  },
+  "limitations": []
+}

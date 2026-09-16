@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\arxml-secdiff-main\arxml_secdiff\cli.py", line 251, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\cli.py", line 206, in main
+    analysis = pipeline_mod.run(
+               ^^^^^^^^^^^^^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\pipeline.py", line 151, in run
+    before = load(
+             ^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\pipeline.py", line 115, in load
+    model = parser_mod.parse(list(sources))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\parser.py", line 99, in parse
+    for _, root in xmlutil.load_paths(list(sources)):
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\xmlutil.py", line 41, in load_paths
+    return [(Path(p), load_file(p)) for p in sorted(Path(p) for p in paths)]
+                      ^^^^^^^^^^^^
+  File "D:\arxml-secdiff-main\arxml_secdiff\xmlutil.py", line 35, in load_file
+    tree = etree.parse(str(path), parser)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "src/lxml/etree.pyx", line 3711, in lxml.etree.parse
+  File "src/lxml/parser.pxi", line 2031, in lxml.etree._parseDocument
+  File "src/lxml/parser.pxi", line 2057, in lxml.etree._parseDocumentFromURL
+  File "src/lxml/parser.pxi", line 1958, in lxml.etree._parseDocFromFile
+  File "src/lxml/parser.pxi", line 1230, in lxml.etree._BaseParser._parseDocFromFile
+  File "src/lxml/parser.pxi", line 647, in lxml.etree._ParserContext._handleParseResultDoc
+  File "src/lxml/parser.pxi", line 765, in lxml.etree._handleParseResult
+  File "src/lxml/parser.pxi", line 689, in lxml.etree._raiseParseError
+  File "file:/D:/arxml-secdiff-main/scenario_runs/04_mitsubishi_outlander/before.arxml", line 4
+lxml.etree.XMLSyntaxError: Input is not proper UTF-8, indicate encoding !
+Bytes: 0x96 0x96 0x20 0x61, line 4, column 279

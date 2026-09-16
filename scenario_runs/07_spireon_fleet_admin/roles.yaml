@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S07ADMI/Swc/Root/panel
+    reason: "Spireon fleet admin-panel authentication misconfiguration (2023) entry point"
+
+critical:
+  - node: /S07ADMI/Swc/Root/starter
+    asil: D
+    reason: "Spireon fleet admin-panel authentication misconfiguration (2023) safety-critical target"

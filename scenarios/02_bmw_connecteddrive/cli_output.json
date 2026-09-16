@@ -1,0 +1,185 @@
+{
+  "verdict": "BLOCK",
+  "exit_code": 3,
+  "reasons": [
+    "2 finding(s) at risk 5 or above, worst: tcu can now reach chassis"
+  ],
+  "sources": {
+    "before": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/02_bmw_connecteddrive/before.arxml"
+    ],
+    "updated": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/02_bmw_connecteddrive/after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "before": {
+      "components": 3,
+      "connections": 1,
+      "pdus": 2,
+      "secoc_profiles": 1,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 0
+    },
+    "updated": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 3,
+      "secoc_profiles": 1,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "structural": {
+      "nodes_added": 0,
+      "nodes_removed": 0,
+      "nodes_modified": 2,
+      "edges_added": 1,
+      "edges_removed": 0,
+      "edges_modified": 0,
+      "newly_unprotected": 1,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 0,
+      "updated_paths": 1,
+      "new_pairs": 1,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 0
+    },
+    "findings": 2,
+    "gate": {
+      "verdict": "BLOCK",
+      "exit_code": 3,
+      "blocking": 2,
+      "flagged": 0,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 0,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [],
+  "findings": [
+    {
+      "id": "newly-reachable:/S02CONN/Swc/Root/tcu->/S02CONN/Swc/Root/chassis",
+      "category": "newly-reachable",
+      "subject": "/S02CONN/Swc/Root/tcu->/S02CONN/Swc/Root/chassis",
+      "title": "tcu can now reach chassis",
+      "detail": "No path existed between these two in the before. Every connector on the new route may be individually reasonable; the chain is not.",
+      "target": "/S02CONN/Swc/Root/chassis",
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "chassis is ASIL D -> severe impact",
+        "1 of 2 hops cross a bus unauthenticated (weakest: gwToChassis)"
+      ],
+      "route": [
+        "/S02CONN/Swc/Root/tcu",
+        "/S02CONN/Swc/Root/cgw",
+        "/S02CONN/Swc/Root/chassis"
+      ],
+      "evidence": {
+        "path": [
+          "/S02CONN/Swc/Root/tcu",
+          "/S02CONN/Swc/Root/cgw",
+          "/S02CONN/Swc/Root/chassis"
+        ],
+        "hops": [
+          "/S02CONN/Swc/Root/tcu -data-> /S02CONN/Swc/Root/cgw",
+          "/S02CONN/Swc/Root/cgw -data-> /S02CONN/Swc/Root/chassis"
+        ],
+        "unprotected_hops": [
+          "/S02CONN/Swc/Root/gwToChassis#data"
+        ],
+        "bus_hops": [
+          "/S02CONN/Swc/Root/tcuToGw#data",
+          "/S02CONN/Swc/Root/gwToChassis#data"
+        ],
+        "fully_protected": false
+      }
+    },
+    {
+      "id": "unprotected-new-hop:/S02CONN/Swc/Root/gwToChassis#data",
+      "category": "unprotected-new-hop",
+      "subject": "/S02CONN/Swc/Root/gwToChassis#data",
+      "title": "Unauthenticated bus traffic on gwToChassis",
+      "detail": "This hop is newly applicable for SecOC and arrived without it, so it is on a wire with nothing authenticating it.",
+      "target": null,
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "this hop lies on a route to chassis, so it inherits that target's severe impact",
+        "unauthenticated bus traffic: forging a frame needs bus access and commodity hardware, no keys"
+      ],
+      "route": null,
+      "evidence": {
+        "connector": "/S02CONN/Swc/Root/gwToChassis",
+        "influence": "data",
+        "source": "/S02CONN/Swc/Root/cgw",
+        "target": "/S02CONN/Swc/Root/chassis",
+        "unprotected_pdus": [
+          "/S02CONN/Comm/gwToChassisIPdu"
+        ],
+        "changed_fields": []
+      }
+    }
+  ],
+  "gate": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "blocking": 2,
+    "flagged": 0,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 0,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S02CONN/Swc/Root/tcu"
+      ],
+      "critical": [
+        "/S02CONN/Swc/Root/chassis"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S02CONN/Swc/Root/tcu"
+      ],
+      "critical": [
+        "/S02CONN/Swc/Root/chassis"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    }
+  },
+  "limitations": []
+}

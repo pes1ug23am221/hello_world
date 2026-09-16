@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S03FIX/Swc/Root/ic
+    reason: "Tesla 2016 remote-attack OTA fix: code signing added (control case) entry point"
+
+critical:
+  - node: /S03FIX/Swc/Root/ape
+    asil: D
+    reason: "Tesla 2016 remote-attack OTA fix: code signing added (control case) safety-critical target"

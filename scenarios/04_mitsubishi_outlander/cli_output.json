@@ -1,0 +1,217 @@
+{
+  "verdict": "FLAG",
+  "exit_code": 1,
+  "reasons": [
+    "1 finding(s) at risk 3 or above, worst: gsm can now reach alarm"
+  ],
+  "sources": {
+    "before": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/04_mitsubishi_outlander/before.arxml"
+    ],
+    "updated": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/04_mitsubishi_outlander/after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "FLAG",
+    "exit_code": 1,
+    "before": {
+      "components": 2,
+      "connections": 1,
+      "pdus": 1,
+      "secoc_profiles": 0,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "updated": {
+      "components": 2,
+      "connections": 1,
+      "pdus": 2,
+      "secoc_profiles": 1,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "structural": {
+      "nodes_added": 1,
+      "nodes_removed": 1,
+      "nodes_modified": 1,
+      "edges_added": 1,
+      "edges_removed": 1,
+      "edges_modified": 0,
+      "newly_unprotected": 0,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 1,
+      "updated_paths": 1,
+      "new_pairs": 1,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 1
+    },
+    "findings": 3,
+    "gate": {
+      "verdict": "FLAG",
+      "exit_code": 1,
+      "blocking": 0,
+      "flagged": 1,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 2,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [
+    {
+      "pdu": "/S04OUTL/Comm/gsmToAlarmIPdu",
+      "change": "added",
+      "lost_protection": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "newly-reachable:/S04OUTL/Swc/Root/gsm->/S04OUTL/Swc/Root/alarm",
+      "category": "newly-reachable",
+      "subject": "/S04OUTL/Swc/Root/gsm->/S04OUTL/Swc/Root/alarm",
+      "title": "gsm can now reach alarm",
+      "detail": "No path existed between these two in the before. Every connector on the new route may be individually reasonable; the chain is not.",
+      "target": "/S04OUTL/Swc/Root/alarm",
+      "informational": false,
+      "risk": 4,
+      "risk_label": "high",
+      "impact": "severe",
+      "feasibility": "medium",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "alarm is ASIL D -> severe impact",
+        "all 1 bus hops on the route are authenticated, so the attacker needs key material or a compromised legitimate sender",
+        "entry point is remotely accessible (wi-fi), raising feasibility"
+      ],
+      "route": [
+        "/S04OUTL/Swc/Root/gsm",
+        "/S04OUTL/Swc/Root/alarm"
+      ],
+      "evidence": {
+        "path": [
+          "/S04OUTL/Swc/Root/gsm",
+          "/S04OUTL/Swc/Root/alarm"
+        ],
+        "hops": [
+          "/S04OUTL/Swc/Root/gsm -data-> /S04OUTL/Swc/Root/alarm"
+        ],
+        "unprotected_hops": [],
+        "bus_hops": [
+          "/S04OUTL/Swc/Root/gsmToAlarm#data"
+        ],
+        "fully_protected": true
+      }
+    },
+    {
+      "id": "component-added:/S04OUTL/Swc/Root/gsm",
+      "category": "component-added",
+      "subject": "/S04OUTL/Swc/Root/gsm",
+      "title": "New component gsm",
+      "detail": "",
+      "target": null,
+      "informational": true,
+      "risk": 1,
+      "risk_label": "informational",
+      "impact": "negligible",
+      "feasibility": "very-low",
+      "assumed": true,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "category component-added carries a fixed negligible impact",
+        "no bus exposure established for this finding"
+      ],
+      "route": null,
+      "evidence": {
+        "host": "TelematicsEcu",
+        "type": "/S04OUTL/Swc/GsmModule"
+      }
+    },
+    {
+      "id": "component-removed:/S04OUTL/Swc/Root/wifi",
+      "category": "component-removed",
+      "subject": "/S04OUTL/Swc/Root/wifi",
+      "title": "Component wifi removed",
+      "detail": "",
+      "target": null,
+      "informational": true,
+      "risk": 1,
+      "risk_label": "informational",
+      "impact": "negligible",
+      "feasibility": "very-low",
+      "assumed": true,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "category component-removed carries a fixed negligible impact",
+        "no bus exposure established for this finding"
+      ],
+      "route": null,
+      "evidence": {
+        "host": "TelematicsEcu"
+      }
+    }
+  ],
+  "gate": {
+    "verdict": "FLAG",
+    "exit_code": 1,
+    "blocking": 0,
+    "flagged": 1,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 2,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S04OUTL/Swc/Root/wifi"
+      ],
+      "critical": [
+        "/S04OUTL/Swc/Root/alarm"
+      ],
+      "heuristic_only": false,
+      "unmatched": [
+        [
+          "entry",
+          "/S04OUTL/Swc/Root/gsm"
+        ]
+      ],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S04OUTL/Swc/Root/gsm"
+      ],
+      "critical": [
+        "/S04OUTL/Swc/Root/alarm"
+      ],
+      "heuristic_only": false,
+      "unmatched": [
+        [
+          "entry",
+          "/S04OUTL/Swc/Root/wifi"
+        ]
+      ],
+      "gaps": []
+    }
+  },
+  "limitations": [
+    "before: config pattern '/S04OUTL/Swc/Root/gsm' for entry matched no component in this snapshot, so that check did not run.",
+    "updated: config pattern '/S04OUTL/Swc/Root/wifi' for entry matched no component in this snapshot, so that check did not run.",
+    "the entry/critical seed set differs between the two snapshots, so some reachability changes may reflect the question changing rather than the architecture: /S04OUTL/Swc/Root/gsm, /S04OUTL/Swc/Root/wifi"
+  ]
+}

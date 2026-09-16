@@ -1,0 +1,10 @@
+entry_points:
+  - node: /S01UCON/Swc/Root/tel
+    reason: "Jeep Cherokee / Uconnect remote exploit (2015) entry point"
+  - node: /S01UCON/Swc/Root/ivi
+    reason: "Jeep Cherokee / Uconnect remote exploit (2015) entry point"
+
+critical:
+  - node: /S01UCON/Swc/Root/steer
+    asil: D
+    reason: "Jeep Cherokee / Uconnect remote exploit (2015) safety-critical target"

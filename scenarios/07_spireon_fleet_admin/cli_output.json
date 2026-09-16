@@ -1,0 +1,152 @@
+{
+  "verdict": "BLOCK",
+  "exit_code": 3,
+  "reasons": [
+    "1 finding(s) at risk 5 or above, worst: SecOC removed from panel -> fleet"
+  ],
+  "sources": {
+    "before": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/07_spireon_fleet_admin/before.arxml"
+    ],
+    "updated": [
+      "/home/claude/repo/arxml-secdiff-main/scenarios/07_spireon_fleet_admin/after.arxml"
+    ]
+  },
+  "summary": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "before": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 4,
+      "secoc_profiles": 2,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "updated": {
+      "components": 3,
+      "connections": 2,
+      "pdus": 3,
+      "secoc_profiles": 1,
+      "synthetic_secoc": 0,
+      "entry_points": 1,
+      "critical_nodes": 1,
+      "attack_paths": 1
+    },
+    "structural": {
+      "nodes_added": 0,
+      "nodes_removed": 0,
+      "nodes_modified": 0,
+      "edges_added": 0,
+      "edges_removed": 0,
+      "edges_modified": 1,
+      "newly_unprotected": 1,
+      "newly_bus_visible": 0,
+      "rehosted": 0,
+      "renamed_connectors": 0
+    },
+    "reachability": {
+      "before_paths": 1,
+      "updated_paths": 1,
+      "new_pairs": 0,
+      "new_paths": 0,
+      "shorter": 0,
+      "removed_pairs": 0
+    },
+    "findings": 1,
+    "gate": {
+      "verdict": "BLOCK",
+      "exit_code": 3,
+      "blocking": 1,
+      "flagged": 0,
+      "unanalysed": 0,
+      "downgraded": 0,
+      "informational": 0,
+      "accepted": 0
+    }
+  },
+  "secoc_changes": [
+    {
+      "pdu": "/S07ADMI/Comm/panelToFleetIPdu",
+      "change": "removed",
+      "lost_protection": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "secoc-removed:/S07ADMI/Swc/Root/panelToFleet#data",
+      "category": "secoc-removed",
+      "subject": "/S07ADMI/Swc/Root/panelToFleet#data",
+      "title": "SecOC removed from panel -> fleet",
+      "detail": "This hop crossed a bus with SecOC in the before and no longer does. Any device on the bus can now forge it.",
+      "target": null,
+      "informational": false,
+      "risk": 5,
+      "risk_label": "critical",
+      "impact": "severe",
+      "feasibility": "high",
+      "assumed": false,
+      "scorer": "builtin-21434",
+      "rationale": [
+        "this hop lies on a route to starter, so it inherits that target's severe impact",
+        "unauthenticated bus traffic: forging a frame needs bus access and commodity hardware, no keys"
+      ],
+      "route": null,
+      "evidence": {
+        "connector": "/S07ADMI/Swc/Root/panelToFleet",
+        "influence": "data",
+        "source": "/S07ADMI/Swc/Root/panel",
+        "target": "/S07ADMI/Swc/Root/fleet",
+        "unprotected_pdus": [
+          "/S07ADMI/Comm/panelToFleetIPdu"
+        ],
+        "changed_fields": [
+          "authenticated: True -> False",
+          "secoc_source: 'secured-i-pdu' -> 'absent'",
+          "unprotected_pdus: () -> ('/S07ADMI/Comm/panelToFleetIPdu',)"
+        ]
+      }
+    }
+  ],
+  "gate": {
+    "verdict": "BLOCK",
+    "exit_code": 3,
+    "blocking": 1,
+    "flagged": 0,
+    "unanalysed": 0,
+    "downgraded": 0,
+    "informational": 0,
+    "accepted": 0,
+    "accepted_ids": [],
+    "downgraded_ids": [],
+    "stale_acceptances": [],
+    "refused_acceptances": []
+  },
+  "roles": {
+    "before": {
+      "entry": [
+        "/S07ADMI/Swc/Root/panel"
+      ],
+      "critical": [
+        "/S07ADMI/Swc/Root/starter"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    },
+    "updated": {
+      "entry": [
+        "/S07ADMI/Swc/Root/panel"
+      ],
+      "critical": [
+        "/S07ADMI/Swc/Root/starter"
+      ],
+      "heuristic_only": false,
+      "unmatched": [],
+      "gaps": []
+    }
+  },
+  "limitations": []
+}

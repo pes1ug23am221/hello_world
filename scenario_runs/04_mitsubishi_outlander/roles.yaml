@@ -1,0 +1,10 @@
+entry_points:
+  - node: /S04OUTL/Swc/Root/wifi
+    reason: "Mitsubishi Outlander PHEV Wi-Fi module weak PSK -> GSM module fix entry point"
+  - node: /S04OUTL/Swc/Root/gsm
+    reason: "Mitsubishi Outlander PHEV Wi-Fi module weak PSK -> GSM module fix entry point"
+
+critical:
+  - node: /S04OUTL/Swc/Root/alarm
+    asil: D
+    reason: "Mitsubishi Outlander PHEV Wi-Fi module weak PSK -> GSM module fix safety-critical target"

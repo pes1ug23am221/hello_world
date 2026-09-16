@@ -1,0 +1,10 @@
+entry_points:
+  - node: /S09SDK/Swc/Root/ivi
+    reason: "Third-party supplier SDK bundled into an infotainment feature update entry point"
+  - node: /S09SDK/Swc/Root/sdk
+    reason: "Third-party supplier SDK bundled into an infotainment feature update entry point"
+
+critical:
+  - node: /S09SDK/Swc/Root/body
+    asil: D
+    reason: "Third-party supplier SDK bundled into an infotainment feature update safety-critical target"

@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S08DEAS/Swc/Root/consumer
+    reason: "SOME/IP service-discovery de-association (Zelle et al., 2021) entry point"
+
+critical:
+  - node: /S08DEAS/Swc/Root/provider
+    asil: D
+    reason: "SOME/IP service-discovery de-association (Zelle et al., 2021) safety-critical target"

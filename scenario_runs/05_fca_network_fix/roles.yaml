@@ -1,0 +1,8 @@
+entry_points:
+  - node: /S05FIX/Swc/Root/tel
+    reason: "FCA post-recall network-level access restriction (2015) entry point"
+
+critical:
+  - node: /S05FIX/Swc/Root/steer
+    asil: D
+    reason: "FCA post-recall network-level access restriction (2015) safety-critical target"
