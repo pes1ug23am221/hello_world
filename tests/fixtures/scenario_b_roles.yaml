@@ -1,0 +1,47 @@
+# Role seeds for the Scenario B case study.
+#
+# This file is the part of the analysis that does NOT come from the ARXML, and saying
+# so plainly is the point. Criticality lives in the programme's HARA and TARA, which
+# are documents; the architecture files record no ASIL and no attack surface. Every
+# entry below is an assertion by the analyst, and `roles.py` records the source as
+# `config` so a report can distinguish these from guesses.
+#
+# With both roles configured here, the name-matching heuristics are suppressed
+# entirely (see `roles.classify`), so nothing in the case-study numbers depends on a
+# substring match.
+
+entry_points:
+  # The Bluetooth stack is the radio itself: pairing and A2DP parsing run here, and it
+  # is the surface a proximate attacker actually touches. Listing it rather than the
+  # head unit keeps the reported path honest about where the attacker starts, and
+  # makes the first hop an RTE-local one -- useful, because that hop must appear in the
+  # route with authentication marked not-applicable rather than missing.
+  - node: /B/Swc/ScenarioB/btStack
+    reason: Bluetooth pairing and media parsing surface, proximate attacker
+
+  # The head unit is independently externally facing (USB media, Wi-Fi hotspot, and in
+  # a real vehicle the OTA client). It is listed as a second entry point because a
+  # threat model that only admitted the Bluetooth stack would understate the surface:
+  # a USB-borne compromise of the head unit skips the first hop entirely.
+  - node: /B/Swc/ScenarioB/ivi
+    reason: USB media import and Wi-Fi hotspot on the head unit
+
+critical:
+  # The actuator is the hazard. Unintended braking at speed is the classic S3/E4/C3
+  # case, hence ASIL D.
+  - node: /B/Swc/ScenarioB/brakeAct
+    asil: D
+    reason: service brake actuation, unintended deceleration hazard
+
+  # The controller is scored at the same level: it computes the force the actuator
+  # applies, so influencing it is equivalent to influencing the actuator.
+  - node: /B/Swc/ScenarioB/brakeCtl
+    asil: D
+    reason: brake force arbitration, inherits the actuator hazard
+
+  # The planner issues deceleration requests but the guard downstream bounds them, so
+  # the residual hazard is lower. Included so the report has to rank two different
+  # severities rather than treating every critical node alike.
+  - node: /B/Swc/ScenarioB/adas
+    asil: B
+    reason: trajectory planning, bounded downstream by TrajectoryGuard

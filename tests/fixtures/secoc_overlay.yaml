@@ -1,0 +1,11 @@
+# Synthetic SecOC overlay, joined to connectors by PDU path.
+#
+# Real programmes keep SecOC in vendor ECU configuration that does not ship with
+# the architecture files, so this side input stands in for it. Anything asserted
+# here is an assumption, not evidence: `secoc.profiles()` lets a SECURED-I-PDU
+# found in the ARXML override a matching entry, and every profile records which
+# source it came from so the two never blur together in a report.
+secoc:
+  /B/Comm/DiagIPdu:
+    authenticated: false
+    note: diagnostic channel left unauthenticated on purpose, as a positive control
